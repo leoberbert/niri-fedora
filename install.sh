@@ -44,11 +44,12 @@ install_packages() {
   sudo dnf copr enable -y eddsalkield/swaylock-effects
   sudo dnf swap -y swaylock swaylock-effects || true
   sudo dnf install -y \
-    brightnessctl cargo cliphist dunst fd-find fuzzel figlet gum git \
-    ImageMagick lz4-devel libxkbcommon-devel nautilus niri pamixer pavucontrol \
+    brightnessctl cargo cliphist curl dunst fd-find firefox fuzzel figlet gnome-calculator gum git \
+    ImageMagick jq lz4-devel libxkbcommon-devel nautilus NetworkManager-tui niri pamixer pavucontrol \
     playerctl polkit-kde power-profiles-daemon python3-gobject python3-pip \
-    rofi starship swaybg swayidle udiskie waybar wayland-devel \
-    wayland-protocols-devel wireplumber wl-clipboard wlogout xwayland-satellite
+    rofi swaybg swayidle udiskie waybar wayland-devel \
+    wayland-protocols-devel wireplumber wl-clipboard wlogout xwayland-satellite \
+    unzip fontawesome-fonts-all google-roboto-fonts
 
   if ! command -v awww &>/dev/null || ! command -v awww-daemon &>/dev/null; then
     local src
@@ -63,6 +64,23 @@ install_packages() {
   fi
 
   command -v wal &>/dev/null || pip install --user pywal
+
+  install_nerd_font
+}
+
+# Ubuntu Mono Nerd Font (dunst/fuzzel) is not packaged in Fedora
+install_nerd_font() {
+  fc-list | grep -qi "UbuntuMono Nerd Font" && return
+  local dir=$HOME/.local/share/fonts/UbuntuMonoNerd tmp
+  tmp=$(mktemp -d)
+  if curl -fsSL -o "$tmp/font.zip" https://github.com/ryanoasis/nerd-fonts/releases/latest/download/UbuntuMono.zip; then
+    mkdir -p "$dir"
+    unzip -qo "$tmp/font.zip" -d "$dir"
+    fc-cache -f "$dir"
+  else
+    warn "could not download Ubuntu Mono Nerd Font; falling back to default fonts."
+  fi
+  rm -rf "$tmp"
 }
 
 # render_tree SRC DST: copy SRC to DST replacing the placeholders in text files.
@@ -127,8 +145,21 @@ $SKIP_PACKAGES || install_packages
 install_config
 $SKIP_WAL || generate_wal_colors
 
-command -v zashterminal &>/dev/null ||
-  warn "zashterminal (terminal bound to Mod+Return) not found in PATH; install it separately."
+install_zashterminal() {
+  command -v zashterminal &>/dev/null && return
+  warn "zashterminal (terminal bound to Mod+Return) not found in PATH."
+  if [ ! -t 0 ]; then
+    warn "non-interactive run; install it manually (see README)."
+    return
+  fi
+  local answer
+  read -r -p "[?] Install zashterminal now? (Y/n): " answer
+  if [[ ${answer:-Y} =~ ^[Yy]$ ]]; then
+    curl -fsSL https://raw.githubusercontent.com/leoberbert/zashterminal/refs/heads/main/install.sh | bash ||
+      warn "zashterminal installation failed."
+  fi
+}
+install_zashterminal
 
 if command -v niri &>/dev/null; then
   if niri validate --config "$CONFIG_HOME/niri/config.kdl" &>/dev/null; then

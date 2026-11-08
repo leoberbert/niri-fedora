@@ -100,6 +100,6 @@ Funcionam também com a tela bloqueada.
 
 ## Manual
 
-- `zashterminal` (terminal do `Mod+Return`) não vem dos repositórios; instale à parte.
+- `zashterminal` (terminal do `Mod+Return`) não vem dos repositórios; o `install.sh` oferece instalá-lo (via script do repositório `leoberbert/zashterminal`) se não estiver no PATH.
 - `outputs.kdl` tem os monitores do meu notebook (`eDP-1`, `HDMI-A-1`); ajuste para outro hardware.
 - `Mod+L` abre o wlogout; `Ctrl+Mod+W` troca o wallpaper (grava em `~/.config/niri/wallpapers.kdl`).
