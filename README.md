@@ -3,6 +3,14 @@
 Minha configuração do [niri](https://github.com/YaLTeR/niri) no Fedora, com instalador.
 Base: niri-setup adaptado (waybar, dunst, fuzzel, rofi, wlogout, swaylock-effects, pywal).
 
+## Screenshots
+
+![Desktop](screenshots/niri-desktop.png)
+
+| Rofi (`Mod+D`) | Wlogout (`Mod+L`) |
+|---|---|
+| ![Rofi](screenshots/niri-rofi.png) | ![Wlogout](screenshots/niri-wlogout.png) |
+
 ## Estrutura
 
 | Caminho | Destino | Conteúdo |
