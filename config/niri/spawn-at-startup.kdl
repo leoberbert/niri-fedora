@@ -1,0 +1,8 @@
+// Spawn processes at niri startup.
+// https://github.com/YaLTeR/niri/wiki/Configuration:-Miscellaneous#spawn-sh-at-startup
+spawn-sh-at-startup "udiskie"
+spawn-sh-at-startup "/usr/libexec/polkit-kde-authentication-agent-1"
+spawn-sh-at-startup "wl-paste --watch cliphist store"
+spawn-sh-at-startup "waybar -c @NIRICONF@/waybar/config -s @NIRICONF@/waybar/style.css"
+spawn-sh-at-startup "dunst -conf @NIRICONF@/dunst/dunstrc"
+spawn-sh-at-startup "pkill swayidle; echo '10 minutes' > /tmp/idle-time; @NIRICONF@/scripts/swayidle.sh"
