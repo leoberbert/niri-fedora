@@ -70,7 +70,7 @@
     "tooltip-format-ethernet": "󰈀  {ifname}\nIP: {ipaddr}\n up: {bandwidthUpBits} down: {bandwidthDownBits}",
     "tooltip-format-disconnected": "Disconnected",
     "max-length": 50,
-    "on-click": "zashterminal --new-window -e sh -c \"printf '\\033]0;nmtui\\007'; exec nmtui connect\"",
+    "on-click": "zashterminal --new-window -e @NIRICONF@/waybar/modules/network-menu.sh",
   },
   "cpu": {
     "format": "  {usage}%",
